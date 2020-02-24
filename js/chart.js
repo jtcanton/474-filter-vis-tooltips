@@ -34,15 +34,13 @@ d3.csv('../data/gapminder.csv').then(function (data) {
         .style('opacity', 0)
         .style('position', 'absolute')
         .style('background', '#f0f3f7')
-        .style('border', '1px solid black')
+        
 
     //line grapph for within tooltip elem
     const tooltipSvg = div.append("svg")
         .attr("id", "ttLineGraph")
         .attr('width', 350)
         .attr('height', 300)
-        .style('margin-left', '10px')
-        .style('margin-top', '10px')
 
     // make x axis
     const xAxis = svg.append("g")
@@ -65,7 +63,7 @@ d3.csv('../data/gapminder.csv').then(function (data) {
         .text('Fertility')
 
     //add dots
-    svg.selectAll("circle")
+    svg.selectAll("circles")
         .data(filt_data)
         .enter()
         .append("circle")
@@ -79,6 +77,12 @@ d3.csv('../data/gapminder.csv').then(function (data) {
         .attr('fill', 'white')
         .style("stroke", "steelblue")
         .on("mouseover", function (x) {
+
+            d3.select(this).style('fill', 'orange')
+
+            //restore width/height to tooltip
+            d3.select('#ttLineGraph').attr('width', '350')
+            d3.select('#ttLineGraph').attr('height', '300')
 
             let min;
             let max;
@@ -145,12 +149,20 @@ d3.csv('../data/gapminder.csv').then(function (data) {
                 .style('top', (d3.event.pageY + 20) + "px")
         })
         .on("mouseout", function (d) {
+
+            d3.select(this).style("fill", "white")
+
+            d3.select('#ttLineGraph')
+            .attr('width', '0')
+            .attr('height', '0')
+            .attr('margin', '0')
+            
             d3.select('#ttLineGraph').selectAll('path').remove();
             d3.select('#ttLineGraph').selectAll('g').remove();
             d3.select('#ttLineGraph').selectAll('text').remove();
+    
             div.transition()
-                .duration(200)
-                .style('opacity', 0)
+                .style('opacity', '0')
         });
 
     let filTest = data.filter(d => d['year'] == 1980 && +d['population'] >= 100000000)
