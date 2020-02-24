@@ -1,7 +1,7 @@
 //width and height
 const margin = { top: 50, right: 50, bottom: 50, left: 50 }
     , w = 1200 - margin.left - margin.right // Use the window's width 
-    , h = 900 - margin.top - margin.bottom // Use the window's height
+    , h = 800 - margin.top - margin.bottom // Use the window's height
 var padding = 40;
 
 
@@ -34,7 +34,7 @@ d3.csv('../data/gapminder.csv').then(function (data) {
         .style('opacity', 0)
         .style('position', 'absolute')
         .style('background', '#f0f3f7')
-        
+
 
     //line grapph for within tooltip elem
     const tooltipSvg = div.append("svg")
@@ -59,8 +59,8 @@ d3.csv('../data/gapminder.csv').then(function (data) {
 
     svg.append('text')
         .attr('text-anchor', 'middle')
-        .attr('transform', "translate(" + 560 + "," + 790 + ")")
-        .text('Fertility')
+        .attr('transform', "translate(" + 560 + "," + 696 + ")")
+        .text('Fertility Rate')
 
     //add dots
     svg.selectAll("circles")
@@ -92,10 +92,8 @@ d3.csv('../data/gapminder.csv').then(function (data) {
 
             //get min and max for tooltip y axis
             minMaxY = filt_data2.filter(r => r['population'] != "NA");
-            console.log(minMaxY);
             minMaxY = minMaxY.map(r => parseInt(r['population']));
             minMaxY = d3.extent(minMaxY);
-            console.log(minMaxY);
 
             min = minMaxY[0];
             max = minMaxY[1];
@@ -132,9 +130,15 @@ d3.csv('../data/gapminder.csv').then(function (data) {
 
             tooltipSvg.append('text')
                 .attr('text-anchor', 'middle')
-                .attr('transform', "translate(" + 10 + "," + 150 + ")rotate(-90)")
+                .attr('transform', "translate(" + 12 + "," + 150 + ")rotate(-90)")
                 .text('population')
                 .style('font-size', '12px')
+
+            tooltipSvg.append('text')
+                .attr('text-anchor', 'middle')
+                .attr('transform', "translate(" + 160 + "," + 25 + ")")
+                .text(countryNow)
+                .style('font-size', '14px')
 
             tooltipSvg.append('text')
                 .attr('text-anchor', 'middle')
@@ -153,20 +157,19 @@ d3.csv('../data/gapminder.csv').then(function (data) {
             d3.select(this).style("fill", "white")
 
             d3.select('#ttLineGraph')
-            .attr('width', '0')
-            .attr('height', '0')
-            .attr('margin', '0')
-            
+                .attr('width', '0')
+                .attr('height', '0')
+                .attr('margin', '0')
+
             d3.select('#ttLineGraph').selectAll('path').remove();
             d3.select('#ttLineGraph').selectAll('g').remove();
             d3.select('#ttLineGraph').selectAll('text').remove();
-    
+
             div.transition()
                 .style('opacity', '0')
         });
 
     let filTest = data.filter(d => d['year'] == 1980 && +d['population'] >= 100000000)
-    console.log(filTest)
 
     svg.selectAll('.text')
         .data(filTest)
