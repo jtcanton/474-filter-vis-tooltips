@@ -7,7 +7,7 @@ var padding = 40;
 
 var dataset;
 //load data
-d3.csv('../data/gapminder.csv').then(function (data) {
+d3.csv('data/gapminder.csv').then(function (data) {
 
     filt_data = data.filter(d => d['fertility'] != "NA");
     filt_data = data.filter(d => d['life_expectancy'] != "NA");
